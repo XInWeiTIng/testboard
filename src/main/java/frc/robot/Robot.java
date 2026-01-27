@@ -6,9 +6,10 @@ import edu.wpi.first.wpilibj.TimedRobot;
 
 import edu.wpi.first.wpilibj.XboxController;
 
-
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.spark.SparkMax;
+//import com.revrobotics.spark.SparkMax;
+//import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 
 
@@ -17,19 +18,22 @@ import com.revrobotics.spark.SparkMax;
 
 
 public class Robot extends TimedRobot {
-  private final TalonFX fxmotor1 = new TalonFX(6);
-  private final TalonFX fxmotor2 = new TalonFX(16);
-  private final TalonFX fxmotor3 = new TalonFX(8);
-  private final TalonFX fxmotor4 = new TalonFX(0);
-  private final SparkMax sparkMax1 = new SparkMax(9, null);
-  private final SparkMax sparkMax2 = new SparkMax(11, null);
-  private final SparkMax sparkMax3 = new SparkMax(21, null);
-  private final SparkMax sparkMax4 = new SparkMax(2, null);
+  private final TalonFX fxmotor1 = new TalonFX(8);
+  private final TalonFX fxmotor2 = new TalonFX(18);
+  //private final TalonFX fxmotor3 = new TalonFX(8);
+  //private final TalonFX fxmotor4 = new TalonFX(0);
+  //private final SparkMax sparkMax1 = new SparkMax(9, MotorType.kBrushless);
+  //private final SparkMax sparkMax2 = new SparkMax(11, MotorType.kBrushless);
+  //private final SparkMax sparkMax3 = new SparkMax(21, MotorType.kBrushless);
+  //private final SparkMax sparkMax4 = new SparkMax(2, MotorType.kBrushless);
   private final XboxController controller = new XboxController(0);
 
   public Robot() {
+    fxmotor1.getConfigurator().apply(new TalonFXConfiguration());
+    fxmotor2.getConfigurator().apply(new TalonFXConfiguration());
+    //fxmotor3.getConfigurator().apply(new TalonFXConfiguration());
+    //fxmotor4.getConfigurator().apply(new TalonFXConfiguration());
     
-
   }
 
  
@@ -58,7 +62,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     if(controller.getAButton() && controller.getXButtonPressed()){
       isHighSpeed = !isHighSpeed;
-    }
+  }
     if(isHighSpeed){
       speed = controller.getLeftY() * 0.6;
     }else{
@@ -70,8 +74,8 @@ public class Robot extends TimedRobot {
     
     fxmotor1.set(speed);
     fxmotor2.set(speed);
-    fxmotor3.set(speed);
-    sparkMax1.set(speed);
+    //fxmotor3.set(speed);
+    //sparkMax1.set(speed);
   }
 
  
