@@ -7,9 +7,15 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
-//import com.revrobotics.spark.SparkMax;
-//import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 
 
@@ -20,19 +26,44 @@ import com.ctre.phoenix6.hardware.TalonFX;
 public class Robot extends TimedRobot {
   private final TalonFX fxmotor1 = new TalonFX(8);
   private final TalonFX fxmotor2 = new TalonFX(18);
-  //private final TalonFX fxmotor3 = new TalonFX(8);
-  //private final TalonFX fxmotor4 = new TalonFX(0);
-  //private final SparkMax sparkMax1 = new SparkMax(9, MotorType.kBrushless);
-  //private final SparkMax sparkMax2 = new SparkMax(11, MotorType.kBrushless);
-  //private final SparkMax sparkMax3 = new SparkMax(21, MotorType.kBrushless);
-  //private final SparkMax sparkMax4 = new SparkMax(2, MotorType.kBrushless);
+  private final TalonFX fxmotor3 = new TalonFX(3);
+  private final TalonFX fxmotor4 = new TalonFX(5);
+  private final SparkMax sparkMax1 = new SparkMax(9, MotorType.kBrushless);
+  private final SparkMax sparkMax2 = new SparkMax(11, MotorType.kBrushless);
+  private final SparkMax sparkMax3 = new SparkMax(21, MotorType.kBrushless);
+  private final SparkMax sparkMax4 = new SparkMax(2, MotorType.kBrushless);
   private final XboxController controller = new XboxController(0);
 
   public Robot() {
     fxmotor1.getConfigurator().apply(new TalonFXConfiguration());
     fxmotor2.getConfigurator().apply(new TalonFXConfiguration());
-    //fxmotor3.getConfigurator().apply(new TalonFXConfiguration());
-    //fxmotor4.getConfigurator().apply(new TalonFXConfiguration());
+    fxmotor3.getConfigurator().apply(new TalonFXConfiguration());
+    fxmotor4.getConfigurator().apply(new TalonFXConfiguration());
+
+    fxmotor2.setControl(new Follower(fxmotor1.getDeviceID(), MotorAlignmentValue.Aligned));
+    fxmotor3.setControl(new Follower(fxmotor1.getDeviceID(), MotorAlignmentValue.Aligned));
+    fxmotor4.setControl(new Follower(fxmotor1.getDeviceID(), MotorAlignmentValue.Aligned));
+
+    sparkMax1.configure(
+      new SparkMaxConfig().idleMode(IdleMode.kBrake),
+      ResetMode.kNoResetSafeParameters,
+      PersistMode.kNoPersistParameters
+    );
+    sparkMax2.configure(
+      new SparkMaxConfig().idleMode(IdleMode.kBrake).follow(9),
+      ResetMode.kNoResetSafeParameters,
+      PersistMode.kNoPersistParameters
+    );
+    sparkMax3.configure(
+      new SparkMaxConfig().idleMode(IdleMode.kBrake).follow(9),
+      ResetMode.kNoResetSafeParameters,
+      PersistMode.kNoPersistParameters
+    );
+    sparkMax4.configure(
+      new SparkMaxConfig().idleMode(IdleMode.kBrake).follow(9),
+      ResetMode.kNoResetSafeParameters,
+      PersistMode.kNoPersistParameters
+    );
     
   }
 
@@ -73,9 +104,7 @@ public class Robot extends TimedRobot {
     }
     
     fxmotor1.set(speed);
-    fxmotor2.set(speed);
-    //fxmotor3.set(speed);
-    //sparkMax1.set(speed);
+    sparkMax1.set(speed);
   }
 
  
